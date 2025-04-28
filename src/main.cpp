@@ -6,13 +6,20 @@ Use this as a starting point or replace it with your code.
 by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit https://creativecommons.org/publicdomain/zero/1.0/
 
 */
+#include "shape.h"
+#include "circle.h"
+#include "square.h"
+#include <vector>
+
 
 #include "raylib.h"
 #include "raymath.h"	// for sin function
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
 
-int main ()
-{
+
+
+int main (){
+	
 	const int screenWidth = 1280;
 	const int screenHeight = 800;
 	// Tell the window to use vsync and work on high DPI displays
@@ -26,20 +33,52 @@ int main ()
 
 	// Load a texture from the resources directory
 	Texture wabbit = LoadTexture("wabbit_alpha.png");
+	Shape* shapeC = new Circle(Vector2{ 400,400 });
+	Shape* shapeS = new Square(Vector2{ 400,400 });
+	std::vector <Shape*> shapes;
+#if demo
 	Texture Niko = LoadTexture("Niko.jpg");
+#endif
 	
 	// game loop
 	while (!WindowShouldClose())		// run the loop untill the user presses ESCAPE or presses the Close button on the window
 	{
+		//input->update->draw
+		if (IsMouseButtonDown(0)) {
+			//add curcnet shape
+			shapes.push_back(shapeC);
+			//create new shape
+			shapeC = new Circle(Vector2{ 400,400 });
+		};
+		if (IsMouseButtonDown(1)) {
+			//add curcnet shape
+			shapes.push_back(shapeS);
+			//create new shape
+			shapeS = new Square (Vector2{ 400,400 },20, *(new Color{ 125, 125, 125, 255 }));
+		};
+		
+		shapeC->setPosition(GetMousePosition());
+		shapeC->update();
+		shapeS->setPosition(GetMousePosition());
+		shapeS->update();
+		
 		// drawing
 		BeginDrawing();
 
 		// Setup the back buffer for drawing (clear color and depth buffers)
-		//ClearBackground(BLACK);
+		ClearBackground(BLACK);
 
 		// draw some text using the default font
 		DrawText("Hello Raylib", 200, 200, 20, WHITE);
 
+		// draw our texture to the screen
+		DrawTexture(wabbit, 400,200, WHITE);
+		for (Shape* shape : shapes) {
+			shape->draw();
+		};
+		shapeC->draw();
+		shapeS->draw();
+#if demo
 		// draw our texture to the screen
 		const int sizeFactor = 5;
 		for (short i = 0;i < 100;i++) {
@@ -52,6 +91,8 @@ int main ()
 			DrawTextureEx(Niko, (Vector2) { i, y }, (GetTime()*1115), scale, MAGENTA);
 		};
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
+#endif
+
 		EndDrawing();
 	}
 
