@@ -6,11 +6,11 @@ Use this as a starting point or replace it with your code.
 by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit https://creativecommons.org/publicdomain/zero/1.0/
 
 */
-#include "shape.h"
-#include "circle.h"
-#include "square.h"
-#include <vector>
-
+//#include "shape.h"
+//#include "circle.h"
+//#include "square.h"
+//#include <vector>
+#include "editor.h"
 
 #include "raylib.h"
 #include "raymath.h"	// for sin function
@@ -33,9 +33,7 @@ int main (){
 
 	// Load a texture from the resources directory
 	Texture wabbit = LoadTexture("wabbit_alpha.png");
-	Shape* shapeC = new Circle(Vector2{ 400,400 });
-	Shape* shapeS = new Square(Vector2{ 400,400 });
-	std::vector <Shape*> shapes;
+	Editor editor;
 #if demo
 	Texture Niko = LoadTexture("Niko.jpg");
 #endif
@@ -43,24 +41,7 @@ int main (){
 	// game loop
 	while (!WindowShouldClose())		// run the loop untill the user presses ESCAPE or presses the Close button on the window
 	{
-		//input->update->draw
-		if (IsMouseButtonDown(0)) {
-			//add curcnet shape
-			shapes.push_back(shapeC);
-			//create new shape
-			shapeC = new Circle(Vector2{ 400,400 });
-		};
-		if (IsMouseButtonDown(1)) {
-			//add curcnet shape
-			shapes.push_back(shapeS);
-			//create new shape
-			shapeS = new Square (Vector2{ 400,400 },20, *(new Color{ 125, 125, 125, 255 }));
-		};
-		
-		shapeC->setPosition(GetMousePosition());
-		shapeC->update();
-		shapeS->setPosition(GetMousePosition());
-		shapeS->update();
+		editor.update();
 		
 		// drawing
 		BeginDrawing();
@@ -73,11 +54,7 @@ int main (){
 
 		// draw our texture to the screen
 		DrawTexture(wabbit, 400,200, WHITE);
-		for (Shape* shape : shapes) {
-			shape->draw();
-		};
-		shapeC->draw();
-		shapeS->draw();
+		editor.draw();
 #if demo
 		// draw our texture to the screen
 		const int sizeFactor = 5;

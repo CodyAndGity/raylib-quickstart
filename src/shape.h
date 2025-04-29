@@ -4,7 +4,8 @@ class Shape {
 public:
 	enum class Type {
 		Circle,
-		Square
+		Square,
+		NumShapes
 	};
 public:
 	Shape() = default;
