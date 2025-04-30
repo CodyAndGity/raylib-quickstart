@@ -7,6 +7,12 @@ public:
 		:Circle(position, size, color)
 		, velocity(velocity){};
 	void update() override;
+	void setVelocity(const Vector2& velocity) {
+		this->velocity = velocity;
+	};
+	Vector2 getVelocity() const {
+		return velocity;
+	};
 private:
 	void move();
 private:

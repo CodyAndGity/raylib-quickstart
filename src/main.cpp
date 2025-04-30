@@ -12,6 +12,7 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 //#include <vector>
 #include "editor.h"
 #include "physicsCircle.h"
+#include "pongBoard.h"
 #include "raylib.h"
 #include "raymath.h"	// for sin function
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
@@ -38,7 +39,8 @@ int main (){
 	Editor editor;
 #endif
 #if pong
-	PhysicsCircle* circle = new PhysicsCircle(Vector2{ 400,400 },20.0f,WHITE, Vector2{ 5,7 });
+	PhysicsCircle* circle = new PhysicsCircle(Vector2{ 400,400 }, 20.0f, WHITE, Vector2{ 5,0 });
+	PongBoard* playerBoard = new PongBoard(true);
 #endif
 	
 #if demo
@@ -46,7 +48,7 @@ int main (){
 #endif
 	
 	// game loop
-	while (!WindowShouldClose())		// run the loop untill the user presses ESCAPE or presses the Close button on the window
+	while (!WindowShouldClose())	// run the loop untill the user presses ESCAPE or presses the Close button on the window
 	{
 		#if canvas
 			editor.update();
@@ -54,6 +56,21 @@ int main (){
 			//circle update
 #if pong
 		circle->update();
+		playerBoard->update();
+		//bool ballIsTouchingBoard = CheckCollisionPointRec(circle->getPosition(), playerBoard->getRectangle());
+		bool ballIsTouchingBoardHorizontally = circle->getPosition().x - circle->getSize()<=
+			playerBoard->getPosition().x +playerBoard->getSize() ;
+		bool ballIsTouchingBoardVertically = circle->getPosition().y >= playerBoard->getPosition().y &&
+			  circle->getPosition().y<= playerBoard->getPosition().y + playerBoard->getSize() * 5;
+		//if circle is near baord
+		//like if circle X-radius <= baord x+width
+		
+		//Auto complete made this mess
+		/*if(circle->getPosition().x < playerBoard->getPosition().x + playerBoard->getSize() && circle->getPosition().x > playerBoard->getPosition().x) {
+			if (circle->getPosition().y > playerBoard->getPosition().y && circle->getPosition().y < playerBoard->getPosition().y + playerBoard->getSize() * 5) {
+				circle->setVelocity({ -circle->getVelocity().x, circle->getVelocity().y });
+			}
+		}*/
 #endif
 		// drawing
 		BeginDrawing();
@@ -71,7 +88,20 @@ int main (){
 			editor.draw();
 		#endif
 #if pong
+			if (ballIsTouchingBoardHorizontally) {
+				circle->setColor(GREEN);
+			}else			if (ballIsTouchingBoardVertically) {
+				circle->setColor(BLUE);
+			}else			if (ballIsTouchingBoardHorizontally && ballIsTouchingBoardVertically) {
+				//circle->setVelocity({ -circle->getVelocity().x, circle->getVelocity().y });
+				circle->setColor(RED);
+			}
+			else {
+				circle->setColor(WHITE);
+			}
+			
 		circle->draw();
+		playerBoard->draw();
 #endif
 
 #if demo
