@@ -8,7 +8,12 @@ public:
 		, velocity(velocity){};
 	void update() override;
 	void setVelocity(const Vector2& velocity) {
-		this->velocity = velocity;
+		if (velocity.x > 5 || velocity.x<-5) {
+			this->velocity = velocity;
+		}
+		else {
+			this->velocity = {5, velocity.y };
+		}
 	};
 	Vector2 getVelocity() const {
 		return velocity;

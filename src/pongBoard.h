@@ -14,7 +14,7 @@ public:
 		:Shape(Vector2{ 100,500 }, 20, WHITE),
 		isPlayer{ isPlayer } {
 		if (isPlayer) {
-			this->position = Vector2{ 75,500 };
+			this->position = Vector2{ 75,350 };
 		}
 		else {
 			this->position = Vector2{ (float)GetScreenWidth() - 75,500 };

@@ -39,7 +39,7 @@ int main (){
 	Editor editor;
 #endif
 #if pong
-	PhysicsCircle* circle = new PhysicsCircle(Vector2{ 400,400 }, 20.0f, WHITE, Vector2{ 5,0 });
+	PhysicsCircle* ball = new PhysicsCircle(Vector2{ 400,400 }, 20.0f, WHITE, Vector2{ 5,0 });
 	PongBoard* playerBoard = new PongBoard(true);
 #endif
 	
@@ -55,13 +55,17 @@ int main (){
 		#endif
 			//circle update
 #if pong
-		circle->update();
+			ball->update();
 		playerBoard->update();
 		//bool ballIsTouchingBoard = CheckCollisionPointRec(circle->getPosition(), playerBoard->getRectangle());
-		bool ballIsTouchingBoardHorizontally = circle->getPosition().x - circle->getSize()<=
+		bool ballIsTouchingBoardHorizontally = ball->getPosition().x - ball->getSize()<=
 			playerBoard->getPosition().x +playerBoard->getSize() ;
-		bool ballIsTouchingBoardVertically = circle->getPosition().y >= playerBoard->getPosition().y &&
-			  circle->getPosition().y<= playerBoard->getPosition().y + playerBoard->getSize() * 5;
+		//does not account for the ball radius
+		bool strictBallIsTouchingBoardVertically = ball->getPosition().y >= playerBoard->getPosition().y &&
+			ball->getPosition().y<= playerBoard->getPosition().y + playerBoard->getSize() * 5;
+		//accounts for the ball radius
+		bool ballIsTouchingBoardVertically = ball->getPosition().y+ ball->getSize() >= playerBoard->getPosition().y &&
+			ball->getPosition().y- ball->getSize() <= playerBoard->getPosition().y + playerBoard->getSize() * 5;
 		//if circle is near baord
 		//like if circle X-radius <= baord x+width
 		
@@ -88,19 +92,47 @@ int main (){
 			editor.draw();
 		#endif
 #if pong
-			if (ballIsTouchingBoardHorizontally) {
-				circle->setColor(GREEN);
-			}else			if (ballIsTouchingBoardVertically) {
-				circle->setColor(BLUE);
-			}else			if (ballIsTouchingBoardHorizontally && ballIsTouchingBoardVertically) {
-				//circle->setVelocity({ -circle->getVelocity().x, circle->getVelocity().y });
-				circle->setColor(RED);
+			//if (ballIsTouchingBoardHorizontally && strictBallIsTouchingBoardVertically) {
+			//	//ball->setVelocity({ -ball->getVelocity().x, ball->getVelocity().y });
+			//	ball->setColor(RED);
+			//}else			if (ballIsTouchingBoardHorizontally) {
+			//	ball->setColor(GREEN);
+			//}else			if (strictBallIsTouchingBoardVertically) {
+			//	ball->setColor(BLUE);
+			//}
+			//else			if (ballIsTouchingBoardVertically) {
+			//	ball->setColor(YELLOW);
+			//}else			{
+			//	ball->setColor(WHITE);
+			//}
+			if (ballIsTouchingBoardHorizontally && strictBallIsTouchingBoardVertically) {
+				ball->setVelocity({ -ball->getVelocity().x, ball->getVelocity().y });
 			}
-			else {
-				circle->setColor(WHITE);
+			else if (ballIsTouchingBoardHorizontally && ballIsTouchingBoardVertically) {
+				
+				Vector2 newVelocity = { 0,0 };
+				int upDown = 0;
+				if (ball->getPosition().y > playerBoard->getPosition().y) {
+					upDown = -1;
+				}
+				else {
+					upDown = 1;
+				}
+				float tempx=rand();
+				tempx =(int)tempx % 5;
+				tempx += 1;
+				tempx /= 5;
+				
+				float tempy = ball->getVelocity().x - (ball->getVelocity().x * tempx);
+				//the velocity that was lost combines with the y velocity
+				newVelocity = { -ball->getVelocity().x*tempx, ball->getVelocity().y+(upDown*tempy) };
+					
+				//ball->setVelocity({ -ball->getVelocity().x, ball->getVelocity().y });
+				ball->setVelocity(newVelocity);
+				
+				
 			}
-			
-		circle->draw();
+			ball->draw();
 		playerBoard->draw();
 #endif
 
@@ -126,7 +158,7 @@ int main (){
 	// unload our texture so it can be cleaned up
 	//UnloadTexture(wabbit);
 #if pong
-	delete circle;
+	delete ball;
 #endif
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
