@@ -85,6 +85,10 @@ void Editor::draw(){
 
 }
 
+
+
+
+
 Shape* Editor::create(Shape::Type type){
 	Shape* shape = nullptr;
 	switch (type) {

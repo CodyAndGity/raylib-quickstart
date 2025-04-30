@@ -7,7 +7,7 @@ public:
 	:Shape(position, size, color) {};
 
 
-	void update() override;
+	virtual void update() override;
 	void draw() override;
 	Type getType() override {
 		return Type::Circle;

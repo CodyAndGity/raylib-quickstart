@@ -11,11 +11,12 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 //#include "square.h"
 //#include <vector>
 #include "editor.h"
-
+#include "physicsCircle.h"
 #include "raylib.h"
 #include "raymath.h"	// for sin function
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
-
+//#define canvas 1
+#define pong 1
 
 
 int main (){
@@ -32,8 +33,14 @@ int main (){
 	SearchAndSetResourceDir("resources");
 
 	// Load a texture from the resources directory
-	Texture wabbit = LoadTexture("wabbit_alpha.png");
+	//Texture wabbit = LoadTexture("wabbit_alpha.png");
+#if canvas
 	Editor editor;
+#endif
+#if pong
+	PhysicsCircle* circle = new PhysicsCircle(Vector2{ 400,400 },20.0f,WHITE, Vector2{ 5,7 });
+#endif
+	
 #if demo
 	Texture Niko = LoadTexture("Niko.jpg");
 #endif
@@ -41,20 +48,32 @@ int main (){
 	// game loop
 	while (!WindowShouldClose())		// run the loop untill the user presses ESCAPE or presses the Close button on the window
 	{
-		editor.update();
-		
+		#if canvas
+			editor.update();
+		#endif
+			//circle update
+#if pong
+		circle->update();
+#endif
 		// drawing
 		BeginDrawing();
-
 		// Setup the back buffer for drawing (clear color and depth buffers)
 		ClearBackground(BLACK);
 
 		// draw some text using the default font
-		DrawText("Hello Raylib", 200, 200, 20, WHITE);
+		/*Vector2 mousePos = GetMousePosition();
+		DrawText(TextFormat("Mouse Position: %i, %i", (int)mousePos.x, (int)mousePos.y), 10, 10, 20, WHITE);*/
+		//DrawText("Hello Raylib", 200, 200, 20, WHITE);
 
 		// draw our texture to the screen
-		DrawTexture(wabbit, 400,200, WHITE);
-		editor.draw();
+		//DrawTexture(wabbit, 400,200, WHITE);
+		#if canvas
+			editor.draw();
+		#endif
+#if pong
+		circle->draw();
+#endif
+
 #if demo
 		// draw our texture to the screen
 		const int sizeFactor = 5;
@@ -75,8 +94,10 @@ int main (){
 
 	// cleanup
 	// unload our texture so it can be cleaned up
-	UnloadTexture(wabbit);
-
+	//UnloadTexture(wabbit);
+#if pong
+	delete circle;
+#endif
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
