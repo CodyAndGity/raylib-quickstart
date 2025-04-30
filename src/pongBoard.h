@@ -10,19 +10,19 @@ public:
 		:Shape(position, size, color),
 		isPlayer{ isPlayer } {
 	};*/
-	PongBoard(const bool isPlayer)
+	PongBoard(const bool isLeftPlayer)
 		:Shape(Vector2{ 100,500 }, 20, WHITE),
-		isPlayer{ isPlayer } {
-		if (isPlayer) {
+		isLeftPlayer{ isLeftPlayer } {
+		if (isLeftPlayer) {
 			this->position = Vector2{ 75,350 };
 		}
 		else {
-			this->position = Vector2{ (float)GetScreenWidth() - 75,500 };
+			this->position = Vector2{ (float)GetScreenWidth() - 75,350 };
 		}
 	};
 	void update() override;
 	void draw() override;
 	Type getType() override { return Type::Square; };
 private:
-	bool isPlayer = false;
+	bool isLeftPlayer = false;
 };
