@@ -77,7 +77,7 @@ bool PongGame::handleLeftBoard(){
 
 	//collsion handling
 	if (ballIsTouchingLeftBoardHorizontally && strictBallIsTouchingLeftBoardVertically) {
-		if (IsKeyDown(KEY_W) || IsKeyDown(KEY_S)  || IsKeyDown(KEY_Q) || IsKeyDown(KEY_E)) {
+		if (IsKeyDown(KEY_W) || IsKeyDown(KEY_S)  || IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_E)) {
 			if (ball->getVelocity().x > -10.0f) {
 				ball->setVelocity({ -ball->getVelocity().x * 1.2f, ball->getVelocity().y });
 			}
@@ -138,7 +138,7 @@ bool PongGame::handleRightBoard(){
 
 	//collsion handling
 	if (ballIsTouchingRightBoardHorizontally && strictBallIsTouchingRightBoardVertically) {
-		if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_PAGE_UP) || IsKeyDown(KEY_PAGE_DOWN)) {
+		if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN) || IsKeyPressed(KEY_PAGE_UP) || IsKeyPressed(KEY_PAGE_DOWN)) {
 			if (ball->getVelocity().x < 10.0f) {
 				ball->setVelocity({ -ball->getVelocity().x * 1.2f, ball->getVelocity().y });
 			}

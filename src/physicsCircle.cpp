@@ -38,6 +38,16 @@ void PhysicsCircle::move(){
 	}
 	intendedPosition = Vector2Add(position, velocity);
 
+	if (intendedPosition.x > 10000) {
+		intendedPosition.x = 40;
+		velocity.x = 5;
+	}
+	if (intendedPosition.y > 10000) {
+		intendedPosition.y = 40;
+		velocity.y = 5;
+
+	}
 	setPosition(intendedPosition);
-	DrawText(TextFormat("Mouse Position: %i, %i", (int)velocity.x, (int)velocity.y), 10, 10, 20, WHITE);
+	
+	//DrawText(TextFormat("Ball velocity: %i x, %i y", (int)velocity.x, (int)velocity.y), 10, 10, 20, WHITE);
 }
