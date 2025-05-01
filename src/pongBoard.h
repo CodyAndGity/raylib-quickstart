@@ -17,7 +17,7 @@ public:
 			this->position = Vector2{ 75,350 };
 		}
 		else {
-			this->position = Vector2{ (float)GetScreenWidth() - 75,350 };
+			this->position = Vector2{ (float)GetScreenWidth() - 75-size,350 };
 		}
 	};
 	void update() override;

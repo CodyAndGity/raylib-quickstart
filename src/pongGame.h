@@ -13,6 +13,9 @@ public:
 	void update();
 	void draw();
 private:
+	void handleLeftBoard();
+	void handleRightBoard();
+private:
 	PhysicsCircle* ball = new PhysicsCircle(Vector2{ 400,400 }, 20.0f, WHITE, Vector2{ 5,0 });
 	PongBoard* leftPlayerBoard = new PongBoard(true);
 	PongBoard* rightPlayerBoard = new PongBoard(false);

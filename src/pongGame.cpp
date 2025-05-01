@@ -7,7 +7,13 @@ void PongGame::update(){
 	for (Shape* shape : shapes) {
 		shape->update();
 	}
+	handleLeftBoard();
+	handleRightBoard();
 	
+}
+
+
+void PongGame::handleLeftBoard(){
 	//collsion detection
 	//bool ballIsTouchingBoard = CheckCollisionPointRec(circle->getPosition(), playerBoard->getRectangle());
 	bool ballIsTouchingLeftBoardHorizontally = ball->getPosition().x - ball->getSize() <=
@@ -49,6 +55,49 @@ void PongGame::update(){
 	}
 }
 
+void PongGame::handleRightBoard(){
+	//collsion detection
+	//bool ballIsTouchingBoard = CheckCollisionPointRec(circle->getPosition(), playerBoard->getRectangle());
+	bool ballIsTouchingRightBoardHorizontally = ball->getPosition().x + ball->getSize() >=
+		rightPlayerBoard->getPosition().x;
+		//+ rightPlayerBoard->getSize();
+	
+		//does not account for the ball radius
+	bool strictBallIsTouchingRightBoardVertically = ball->getPosition().y >= rightPlayerBoard->getPosition().y &&
+		ball->getPosition().y <= rightPlayerBoard->getPosition().y + rightPlayerBoard->getSize() * 5;
+	//accounts for the ball radius
+	bool ballIsTouchingRightBoardVertically = ball->getPosition().y + ball->getSize() >= rightPlayerBoard->getPosition().y &&
+		ball->getPosition().y - ball->getSize() <= rightPlayerBoard->getPosition().y + rightPlayerBoard->getSize() * 5;
+
+
+	//collsion handling
+	if (ballIsTouchingRightBoardHorizontally && strictBallIsTouchingRightBoardVertically) {
+		ball->setVelocity({ -ball->getVelocity().x, ball->getVelocity().y });
+	}
+	//coner case
+	else if (ballIsTouchingRightBoardHorizontally && ballIsTouchingRightBoardVertically) {
+
+		Vector2 newVelocity = { 0,0 };
+		int upDown = 0;//whether or not the ball needs to go up or down
+		if (ball->getPosition().y > rightPlayerBoard->getPosition().y) {
+			upDown = -1;
+		}
+		else {
+			upDown = 1;
+		}
+		float tempx = rand();
+		tempx = (int)tempx % 5;
+		tempx += 1;
+		tempx /= 5;
+
+		float tempy = ball->getVelocity().x - (ball->getVelocity().x * tempx);
+		//the velocity that was lost combines with the y velocity
+		newVelocity = { -ball->getVelocity().x * tempx, ball->getVelocity().y + (upDown * tempy) };
+
+		//ball->setVelocity({ -ball->getVelocity().x, ball->getVelocity().y });
+		ball->setVelocity(newVelocity);
+	}
+}
 void PongGame::draw(){
 	for (Shape* shape : shapes) {
 		shape->draw();
