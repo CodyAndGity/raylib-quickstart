@@ -4,22 +4,25 @@ This is an example main file for a simple raylib project.
 Use this as a starting point or replace it with your code.
 
 by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit https://creativecommons.org/publicdomain/zero/1.0/
-
 */
+#if canvas
 //#include "shape.h"
 //#include "circle.h"
 //#include "square.h"
 //#include <vector>
 #include "editor.h"
-#include "physicsCircle.h"
-#include "pongBoard.h"
-#include "raylib.h"
+#endif
+
+#if demo
 #include "raymath.h"	// for sin function
+#endif
+#define pong 1
+#if pong
+#include "raylib.h"
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
 #include "pongGame.h"
-//#define canvas 1
-#define pong 1
-//#define canvas 1
+#endif
+
 
 
 int main (){
