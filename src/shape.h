@@ -5,6 +5,8 @@ public:
 	enum class Type {
 		Circle,
 		Square,
+		Rectangle,
+		PhysicsCircle,
 		NumShapes
 	};
 public:

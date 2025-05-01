@@ -11,7 +11,7 @@ void PongBoard::update() {
 		if (IsKeyDown(KEY_S)) {
 			position.y += 5;
 		}
-		if (IsKeyPressed(KEY_A)) {
+		if (IsKeyPressed(KEY_E)) {
 			position.y += 5;
 		}
 		if (position.y < 0) {

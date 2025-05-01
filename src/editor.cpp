@@ -10,8 +10,6 @@ Editor::Editor(){
 Editor::~Editor() {
 	clearAll();
 	delete shape;
-
-
 }
 
 void Editor::update(){

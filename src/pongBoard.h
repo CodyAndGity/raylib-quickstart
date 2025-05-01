@@ -6,10 +6,7 @@ class PongBoard :public Shape {
 
 public:
 	PongBoard() = default;
-	/*PongBoard(const Vector2& position={100,500}, float size = 20, const Color& color = WHITE, const bool isPlayer = false)
-		:Shape(position, size, color),
-		isPlayer{ isPlayer } {
-	};*/
+
 	PongBoard(const bool isLeftPlayer)
 		:Shape(Vector2{ 100,500 }, 20, WHITE),
 		isLeftPlayer{ isLeftPlayer } {
@@ -22,7 +19,7 @@ public:
 	};
 	void update() override;
 	void draw() override;
-	Type getType() override { return Type::Square; };
+	Type getType() override { return Type::Rectangle; };
 private:
 	bool isLeftPlayer = false;
 };

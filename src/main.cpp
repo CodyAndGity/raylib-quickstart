@@ -19,6 +19,7 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 #include "pongGame.h"
 //#define canvas 1
 #define pong 1
+//#define canvas 1
 
 
 int main (){

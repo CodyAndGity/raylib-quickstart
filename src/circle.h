@@ -9,6 +9,7 @@ public:
 
 	virtual void update() override;
 	void draw() override;
+
 	Type getType() override {
 		return Type::Circle;
 	};
